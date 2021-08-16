@@ -31,6 +31,16 @@
 body {
     overflow-x: hidden;
     background: #f5f5f5;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.espacamento {
+    display: none;
 }
 
 .container {
@@ -526,7 +536,7 @@ body {
     justify-content: space-between;
 }
 
-.box_paciente_center span {
+#box_paciente_center-first span {
     margin: 0 20px;
 }
 
@@ -568,6 +578,7 @@ body {
 
 .ativo_inativo_text.inativo {
     color: var(--red-color);
+    font-size: var(--font-size2);
 }
 
 .box__paciente_body {
@@ -902,6 +913,7 @@ body {
         background-image: linear-gradient( rgba(255, 255, 255, 0), var(--main-color));
     }
     .icon_mobile_container {
+        position: relative;
         width: 100%;
         display: flex;
         align-items: center;
@@ -909,11 +921,32 @@ body {
         padding: var(--second-padding);
     }
     .icon_mobile_container a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         text-decoration: none;
         color: var(--third-color);
     }
+    .icon_mobile_container::after {
+        content: '';
+        height: 0;
+        width: 0;
+        position: absolute;
+        background: radial-gradient(circle at 50%, #cc98e6, #fff 60%, #eee 100%, #cc98e6 75%);
+        border-radius: 50%;
+        z-index: -1;
+        transition: height 0.3s, width 0.3s;
+    }
+    .icon_mobile_container.active::after {
+        height: 35px;
+        width: 35px;
+        box-shadow: 1px 1px 5px var(--white-color);
+    }
     .icon_mobile_container a .link_icon_mobile {
-        font-size: 25px;
+        font-size: 21px;
+    }
+    .icon_mobile_container.active a .link_icon_mobile {
+        transform: scale(1.3);
     }
     .main_top_bar {
         height: 70px;
@@ -942,7 +975,7 @@ body {
     .card_box_days {
         margin-top: 100px;
     }
-    .card_box_days::-webkit-scrollbar, .card_box_controle::-webkit-scrollbar {
+    .minha_agenda_container::-webkit-scrollbar, .card_box_days::-webkit-scrollbar, .card_box_controle::-webkit-scrollbar {
         display: none;
     }
     .card_day, .card_pacientes_info, .card_financeiro_info, .card_horas_info, .card_lembretes {
@@ -1012,17 +1045,21 @@ body {
     #box__paciente__header-presencial {
         grid-area: presencial;
         font-size: 17px;
+        margin-top: 20px;
     }
     #box_paciente_center-first {
         grid-area: dia;
+        margin-top: 20px;
+        justify-content: flex-end;
     }
     #box_paciente_center-first span {
         font-size: 17px;
-        margin: 0;
+        margin: 0 5px;
     }
     #box_paciente_center-second {
         grid-area: ativo;
         justify-content: flex-start;
+        margin-top: 20px;
     }
     #box_paciente_center-second span {
         margin: 0;
@@ -1030,6 +1067,7 @@ body {
     .box_paciente_left_right {
         grid-area: mais;
         justify-content: flex-end;
+        margin-top: 20px;
     }
     .box_paciente_left_side {
         justify-content: unset;
@@ -1054,6 +1092,81 @@ body {
     .info_container {
         font-size: 17px;
     }
+    .pacinte_nome {
+        padding-top: 10px;
+    }
+    .espacamento {
+        height: 70px;
+        display: block;
+    }
+    /* ================================== Meus Horarios ==========================*/
+    /* ================================== Meus Horarios ==========================*/
+    /* ================================== Meus Horarios ==========================*/
+    .minha_agenda_container {
+        margin: 100px 5px 100px 5px;
+        overflow-x: auto;
+        border: 0;
+        border-radius: 0;
+        padding: 5px 15px;
+    }
+    .horas_container {
+        display: none;
+    }
+    .dias_container {
+        gap: 15px;
+        background: none;
+    }
+    .paciente_horario {
+        background: var(--white-color);
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 0 15px 0 0;
+    }
+    .dia {
+        min-width: 290px;
+        border-radius: 30px;
+        box-shadow: 0 2px 5px var(--second-color);
+    }
+    .dia .dia_header {
+        border-top-left-radius: 30px;
+        border-top-right-radius: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 0 15px 0 0;
+        
+    }
+    .dia .dia_footer {
+        border-bottom-left-radius: 30px;
+        border-bottom-right-radius: 30px;
+    }
+    .paciente_horario::before {
+        content: attr(data-hora);
+        position: relative;
+        margin-right: 25%;
+        padding: 15px;
+        min-width: 45px;
+        background: var(--fourth-color);
+        color: var(--white-color);
+    }
+    .dia .dia_header::before {
+        content: 'schedule';
+        position: relative;
+        font-family: 'Material Icons';
+        font-weight: normal;
+        font-style: normal;
+        font-size: 24px;
+        display: inline-block;
+        line-height: 1;
+        text-transform: none;
+        letter-spacing: normal;
+        word-wrap: normal;
+        white-space: nowrap;
+        direction: ltr;
+        margin-right: 25%;
+        padding: 10px 10px 10px 15px;
+    }
 }
 
 @keyframes rotate_icon {
@@ -1062,5 +1175,14 @@ body {
     }
     to {
         transform: rotate(360deg);
+    }
+}
+
+@keyframes nice_appear {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
     }
 }
